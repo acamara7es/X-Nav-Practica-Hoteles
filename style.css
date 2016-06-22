@@ -20,8 +20,13 @@ html,body{
 	/*height:inherit;*/
 	overflow-y: scroll;
 }
-#info{
-	margin-left: 10px;
+
+#infoTitle{
+	text-align: center;
+}
+
+#infoDescription{
+	text-align: justify;
 }
 .info{
 	margin-bottom: 5px;

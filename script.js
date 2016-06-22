@@ -60,7 +60,7 @@ function createPlacesList(data) {
 
 function showInfo(id) {
     $("#infoTitle").html(alojamientos[id].name);
-    $("#infoBody").html(alojamientos[id].description);
+    $("#infoDescription").html(alojamientos[id].description);
     $("#infoAddress").html(alojamientos[id].address);
     $("#infoEmail").html($("<a href='mailto:" + alojamientos[id].email + "'>").html(alojamientos[id].email));
     $("#infoPhone").html(alojamientos[id].phone);
