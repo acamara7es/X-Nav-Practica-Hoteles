@@ -1,0 +1,36 @@
+
+*{
+	margin: 0;
+	padding: 0;
+}
+
+html,body{
+	height:100%;
+}
+#map{
+	display: inline-block;
+	width: 75%;
+	float:left;
+	height: 600px;
+}
+#hoteles{
+	display: inline-block;
+	width: 25%;
+	height:600px;
+	/*height:inherit;*/
+	overflow-y: scroll;
+}
+#info{
+	margin-left: 10px;
+}
+.info{
+	margin-bottom: 5px;
+}
+.glyphicon{
+	margin-right: 3px;
+}
+
+.place{
+	overflow-x: hidden;
+	/*height: 20px;*/
+}
