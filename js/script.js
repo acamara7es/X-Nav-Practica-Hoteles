@@ -1,12 +1,27 @@
-var categorias = [];
 var alojamientos = [];
 
-jQuery(document).ready(function() {
+function cargarAlojamientos() {
     $.getJSON("alojamientos.json")
         .done(function(data) {
             procesaAlojamientos(data["serviceList"]["service"]);
+            alojamientos.sort(function(a, b) {
+                if (a.name > b.name) {
+                    return 1
+                } else if (a.name < b.name) {
+                    return -1
+                } else {
+                    return 0
+                }
+            });
+            lista_alojamientos_html = createPlacesList(alojamientos);
+            $("#hoteles_list").html(lista_alojamientos_html);
+            addPlacesListeners();
+            $("#navbar-buttons li[class=disabled]").removeClass("disabled");
+            lista_colecciones_html = procesaColecciones(alojamientos);
+            lista_colecciones_html.appendTo($("#colecciones"));
+            addColectionListeners()
         })
-})
+};
 
 function procesaAlojamientos(datos) {
     $.each(datos, function(i, lugar) {
@@ -20,6 +35,7 @@ function procesaAlojamientos(datos) {
             "lat": lugar.geoData.latitude,
             "lon": lugar.geoData.longitude,
             "cod_postal": lugar.geoData.zipcode,
+            "usuarios": [],
             "fotos": []
         }
         if (lugar.extradata.categorias.categoria !== undefined) {
@@ -28,6 +44,7 @@ function procesaAlojamientos(datos) {
         if (lugar.extradata.categorias.categoria.subcategorias !== undefined) {
             alojamientos[i].categorias.push(lugar.extradata.categorias.categoria.subcategorias.subcategoria.item[1]["#text"]);
         }
+        alojamientos[i].colecciones = alojamientos[i].categorias.slice()
         if (lugar.multimedia) {
             if (lugar.multimedia.media instanceof Array) {
                 $.each(lugar.multimedia.media, function(j, foto) {
@@ -38,24 +55,14 @@ function procesaAlojamientos(datos) {
             }
         }
     });
-    alojamientos.sort(function(a, b) {
-        if (a.name > b.name) {
-            return 1
-        } else if (a.name < b.name) {
-            return -1
-        } else {
-            return 0
-        }
-    });
-    createPlacesList(alojamientos);
 }
 
 function createPlacesList(data) {
-    $("#hoteles").append($("<ul>"));
+    var lista_hoteles = $("<ul id=hoteles class=list-group>")
     $.each(data, function(i, lugar) {
-        $("#hoteles ul").append($("<li class=place tag=" + i + ">").html(lugar.name));
+        lista_hoteles.append($("<li class='place list-group-item' tag=" + i + ">").html(lugar.name));
     })
-    addListeners();
+    return lista_hoteles
 }
 
 function showInfo(id) {
@@ -65,43 +72,21 @@ function showInfo(id) {
     $("#infoEmail").html($("<a href='mailto:" + alojamientos[id].email + "'>").html(alojamientos[id].email));
     $("#infoPhone").html(alojamientos[id].phone);
     $("#infoWeb").html($("<a href='" + alojamientos[id].web + "'>").html(alojamientos[id].web));
-    $(".carousel-inner").html("");
-    $.each(alojamientos[id].fotos, function(i, foto) {
-        var img = $("<img>").attr("src", foto);
-        var div = $("<div>").html(img);
-        if (i === 0) {
-            div.attr("class", "item active")
-        } else {
-            div.attr("class", "item")
-        }
-        div.appendTo($(".carousel-inner"));
-    })
+    if (alojamientos[id].fotos.length === 0) {
+        $("#carousel-info").addClass("invisible");
+    } else {
+        $("#carousel-info").removeClass("invisible");
+        $(".carousel-inner").html("");
+        $.each(alojamientos[id].fotos, function(i, foto) {
+            var img = $("<img>").attr("src", foto);
+            var div = $("<div>").html(img);
+            if (i === 0) {
+                div.attr("class", "item active")
+            } else {
+                div.attr("class", "item")
+            }
+            div.appendTo($(".carousel-inner"));
+        })
+    }
     $("#popupInfo").modal("show")
-}
-
-function addListeners() {
-    $(".place").hover(function() {
-        var tag = $(this).attr("tag")
-        updateMarker(alojamientos[tag], tag)
-        if ($(this).css("background-color") !== "rgb(0, 128, 0)") {
-            $(this).css("background-color", "grey")
-        }
-    }, function() {
-        var tag = $(this).attr("tag")
-        updateMarker(alojamientos[tag], tag)
-        if ($(this).css("background-color") === "rgb(128, 128, 128)") {
-            $(this).css("background-color", "transparent")
-        }
-    });
-
-    $(".place").click(function() {
-        var tag = $(this).attr("tag")
-        var state = updateMarker(alojamientos[tag], tag, "click")
-        if (state) {
-            $(this).css("background-color", "green")
-        } else {
-            $(this).css("background-color", "transparent")
-
-        }
-    })
 }

@@ -1,41 +1,82 @@
-
-*{
-	margin: 0;
-	padding: 0;
+body {
+    height: 100vh;
+}
+#banner {
+    background-image: url(images/header-bg.png);
+    background-position: center;
+    background-size: cover;
+    height: 120px;
+}
+#banner-content {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    height: 80px;
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+}
+#banner-content #logo {
+    margin: auto;
+}
+#banner-content span {
+    margin: 0 20px;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    color: #B4E0D9;
+}
+.list-group {
+    height: 65vh;
+    overflow-y: scroll;
+}
+.invisible {
+    display: none;
+}
+#users_list{
+    height: 60vh;
+}
+#tab-principal, #tab-colecciones {
+    width: 95%;
+}
+#col_hoteles_list, #hoteles_list, #mapa {
+    height: 70vh;
+}
+#hoteles_list p {
+    color: #aaa;
+    padding: 0 20px;
+    padding-top: 25vh;
+    font-size: 22px;
+    text-align: center;
+}
+h3, h2 {
+    text-align: center;
+}
+#colecciones ul, #tab-colecciones #selected_list {
+    max-height: 60vh;
+}
+#new_user-btn, #load_btn, #del_btn, #new_col {
+    margin-bottom: 5px;
+    width: 100%;
+}
+.item-active {
+    background-color: #bbb;
+}
+.item-selected {
+    background-color: #337ab7;
+    color: white;
+}
+.glyphicon {
+    margin-right: 3px;
+}
+#hotel_description, #infoDescription {
+    text-align: justify;
+}
+.info {
+    margin-bottom: 5px;
 }
 
-html,body{
-	height:100%;
-}
-#map{
-	display: inline-block;
-	width: 75%;
-	float:left;
-	height: 600px;
-}
-#hoteles{
-	display: inline-block;
-	width: 25%;
-	height:600px;
-	/*height:inherit;*/
-	overflow-y: scroll;
-}
-
-#infoTitle{
-	text-align: center;
-}
-
-#infoDescription{
-	text-align: justify;
-}
-.info{
-	margin-bottom: 5px;
-}
-.glyphicon{
-	margin-right: 3px;
-}
-
-.place{
-	overflow-x: hidden;
-	/*height: 20px;*/
+.avatar {
+    height: 45px;
+    margin-right: 10px;
+    display: inline-block;
 }
